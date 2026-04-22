@@ -1,0 +1,1463 @@
+<!DOCTYPE html>
+
+<html lang="ckb" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AMZ BINARY — شیکاری باینەری</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic:wght@400;500;600;700&family=Noto+Kufi+Arabic:wght@400;600;700;900&family=JetBrains+Mono:wght@400;700&display=swap');
+
+:root {
+–bg-deep:     #050810;
+–bg-card:     #0b0f1a;
+–bg-panel:    #0f1420;
+–gold:        #c8a84b;
+–gold-light:  #e8c96a;
+–gold-dim:    #7a6530;
+–cyan:        #00d4ff;
+–cyan-dim:    #005f73;
+–green:       #00ff88;
+–green-dim:   #004422;
+–red:         #ff4757;
+–red-dim:     #440011;
+–purple:      #a855f7;
+–text-main:   #e8e0d0;
+–text-dim:    #8a8070;
+–border:      #1e2535;
+–border-gold: #3a2e10;
+–glow-gold:   rgba(200,168,75,0.15);
+–glow-cyan:   rgba(0,212,255,0.12);
+}
+
+- { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+font-family: ‘Noto Naskh Arabic’, serif;
+background: var(–bg-deep);
+color: var(–text-main);
+min-height: 100vh;
+overflow-x: hidden;
+direction: rtl;
+}
+
+/* ── ANIMATED BACKGROUND ── */
+body::before {
+content: ‘’;
+position: fixed;
+inset: 0;
+background:
+radial-gradient(ellipse 60% 40% at 20% 20%, rgba(200,168,75,0.06) 0%, transparent 60%),
+radial-gradient(ellipse 50% 50% at 80% 80%, rgba(0,212,255,0.05) 0%, transparent 60%),
+radial-gradient(ellipse 30% 30% at 50% 50%, rgba(168,85,247,0.03) 0%, transparent 60%);
+pointer-events: none;
+z-index: 0;
+}
+
+.grid-overlay {
+position: fixed;
+inset: 0;
+background-image:
+linear-gradient(rgba(200,168,75,0.03) 1px, transparent 1px),
+linear-gradient(90deg, rgba(200,168,75,0.03) 1px, transparent 1px);
+background-size: 40px 40px;
+pointer-events: none;
+z-index: 0;
+}
+
+/* ── HEADER ── */
+header {
+position: relative;
+z-index: 10;
+padding: 28px 40px 20px;
+display: flex;
+align-items: center;
+justify-content: space-between;
+border-bottom: 1px solid var(–border-gold);
+background: linear-gradient(180deg, rgba(5,8,16,0.95) 0%, transparent 100%);
+}
+
+.logo-wrap {
+display: flex;
+align-items: center;
+gap: 16px;
+}
+
+.logo-icon {
+width: 50px;
+height: 50px;
+border: 2px solid var(–gold);
+border-radius: 12px;
+display: flex;
+align-items: center;
+justify-content: center;
+font-family: ‘JetBrains Mono’, monospace;
+font-size: 13px;
+font-weight: 700;
+color: var(–gold);
+letter-spacing: 1px;
+background: var(–glow-gold);
+box-shadow: 0 0 20px var(–glow-gold), inset 0 0 20px rgba(200,168,75,0.05);
+animation: logoGlow 3s ease-in-out infinite alternate;
+}
+
+@keyframes logoGlow {
+from { box-shadow: 0 0 15px var(–glow-gold), inset 0 0 15px rgba(200,168,75,0.03); }
+to   { box-shadow: 0 0 35px rgba(200,168,75,0.3), inset 0 0 25px rgba(200,168,75,0.08); }
+}
+
+.logo-text h1 {
+font-family: ‘Noto Kufi Arabic’, sans-serif;
+font-size: 22px;
+font-weight: 900;
+color: var(–gold-light);
+letter-spacing: 1px;
+line-height: 1.1;
+}
+
+.logo-text p {
+font-size: 12px;
+color: var(–text-dim);
+margin-top: 2px;
+}
+
+.header-badge {
+display: flex;
+align-items: center;
+gap: 8px;
+padding: 8px 18px;
+border: 1px solid var(–border-gold);
+border-radius: 30px;
+background: var(–glow-gold);
+font-size: 12px;
+color: var(–gold-dim);
+font-family: ‘Noto Kufi Arabic’, sans-serif;
+}
+
+.badge-dot {
+width: 7px;
+height: 7px;
+border-radius: 50%;
+background: var(–green);
+box-shadow: 0 0 8px var(–green);
+animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+0%, 100% { opacity: 1; transform: scale(1); }
+50%       { opacity: 0.5; transform: scale(0.8); }
+}
+
+/* ── MAIN LAYOUT ── */
+main {
+position: relative;
+z-index: 5;
+max-width: 1100px;
+margin: 0 auto;
+padding: 40px 24px 80px;
+}
+
+/* ── SECTION TITLE ── */
+.section-title {
+text-align: center;
+margin-bottom: 36px;
+}
+
+.section-title h2 {
+font-family: ‘Noto Kufi Arabic’, sans-serif;
+font-size: 28px;
+font-weight: 900;
+color: var(–gold-light);
+margin-bottom: 6px;
+}
+
+.section-title p {
+font-size: 15px;
+color: var(–text-dim);
+}
+
+.divider {
+width: 80px;
+height: 2px;
+background: linear-gradient(90deg, transparent, var(–gold), transparent);
+margin: 12px auto;
+border-radius: 2px;
+}
+
+/* ── TAB NAV ── */
+.tab-nav {
+display: flex;
+justify-content: center;
+flex-wrap: wrap;
+gap: 8px;
+margin-bottom: 40px;
+}
+
+.tab-btn {
+padding: 10px 22px;
+border: 1px solid var(–border);
+border-radius: 30px;
+background: var(–bg-card);
+color: var(–text-dim);
+font-family: ‘Noto Kufi Arabic’, sans-serif;
+font-size: 14px;
+font-weight: 600;
+cursor: pointer;
+transition: all 0.25s ease;
+outline: none;
+direction: rtl;
+}
+
+.tab-btn:hover {
+border-color: var(–gold-dim);
+color: var(–gold);
+background: var(–glow-gold);
+}
+
+.tab-btn.active {
+border-color: var(–gold);
+color: var(–gold-light);
+background: var(–glow-gold);
+box-shadow: 0 0 20px var(–glow-gold);
+}
+
+/* ── TAB PANELS ── */
+.tab-panel { display: none; }
+.tab-panel.active { display: block; animation: fadeIn 0.35s ease; }
+
+@keyframes fadeIn {
+from { opacity: 0; transform: translateY(10px); }
+to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── CARD ── */
+.card {
+background: var(–bg-card);
+border: 1px solid var(–border);
+border-radius: 18px;
+padding: 32px;
+margin-bottom: 24px;
+position: relative;
+overflow: hidden;
+}
+
+.card::before {
+content: ‘’;
+position: absolute;
+top: 0; left: 0; right: 0;
+height: 2px;
+background: linear-gradient(90deg, transparent, var(–gold), transparent);
+opacity: 0.5;
+}
+
+.card-title {
+font-family: ‘Noto Kufi Arabic’, sans-serif;
+font-size: 18px;
+font-weight: 700;
+color: var(–gold);
+margin-bottom: 20px;
+display: flex;
+align-items: center;
+gap: 10px;
+}
+
+.card-title .icon {
+width: 32px;
+height: 32px;
+border-radius: 8px;
+background: var(–glow-gold);
+border: 1px solid var(–border-gold);
+display: flex;
+align-items: center;
+justify-content: center;
+font-size: 16px;
+}
+
+/* ── INPUTS ── */
+.input-row {
+display: flex;
+gap: 12px;
+margin-bottom: 16px;
+flex-wrap: wrap;
+align-items: flex-end;
+}
+
+.input-group {
+display: flex;
+flex-direction: column;
+gap: 6px;
+flex: 1;
+min-width: 200px;
+}
+
+.input-group label {
+font-size: 13px;
+color: var(–text-dim);
+font-family: ‘Noto Kufi Arabic’, sans-serif;
+}
+
+input[type=“text”], input[type=“number”], select {
+background: var(–bg-panel);
+border: 1px solid var(–border);
+border-radius: 10px;
+padding: 12px 16px;
+color: var(–text-main);
+font-family: ‘JetBrains Mono’, monospace;
+font-size: 15px;
+outline: none;
+transition: border-color 0.2s, box-shadow 0.2s;
+direction: ltr;
+text-align: center;
+width: 100%;
+}
+
+input[type=“text”]:focus, input[type=“number”]:focus, select:focus {
+border-color: var(–gold-dim);
+box-shadow: 0 0 0 3px var(–glow-gold);
+}
+
+select {
+cursor: pointer;
+text-align: center;
+}
+
+select option { background: var(–bg-panel); color: var(–text-main); }
+
+/* ── BUTTON ── */
+.btn {
+padding: 12px 28px;
+border-radius: 10px;
+border: 1px solid var(–gold-dim);
+background: linear-gradient(135deg, #1a1400, #2a2000);
+color: var(–gold-light);
+font-family: ‘Noto Kufi Arabic’, sans-serif;
+font-size: 15px;
+font-weight: 700;
+cursor: pointer;
+transition: all 0.2s ease;
+outline: none;
+white-space: nowrap;
+}
+
+.btn:hover {
+background: linear-gradient(135deg, #2a2000, #3a3000);
+border-color: var(–gold);
+box-shadow: 0 0 20px var(–glow-gold);
+transform: translateY(-1px);
+}
+
+.btn:active { transform: translateY(0); }
+
+.btn-clear {
+background: var(–bg-panel);
+border-color: var(–border);
+color: var(–text-dim);
+}
+
+.btn-clear:hover {
+border-color: var(–red);
+color: var(–red);
+box-shadow: 0 0 15px rgba(255,71,87,0.15);
+}
+
+/* ── STEPS ── */
+.steps-container { display: flex; flex-direction: column; gap: 14px; }
+
+.step {
+background: var(–bg-panel);
+border: 1px solid var(–border);
+border-radius: 14px;
+padding: 18px 22px;
+display: flex;
+gap: 16px;
+align-items: flex-start;
+animation: stepIn 0.4s ease both;
+position: relative;
+overflow: hidden;
+}
+
+.step::before {
+content: ‘’;
+position: absolute;
+inset: 0;
+background: linear-gradient(135deg, transparent 80%, rgba(200,168,75,0.03));
+}
+
+@keyframes stepIn {
+from { opacity: 0; transform: translateX(20px); }
+to   { opacity: 1; transform: translateX(0); }
+}
+
+.step-num {
+min-width: 36px;
+height: 36px;
+border-radius: 10px;
+background: var(–glow-gold);
+border: 1px solid var(–gold-dim);
+display: flex;
+align-items: center;
+justify-content: center;
+font-family: ‘JetBrains Mono’, monospace;
+font-size: 14px;
+font-weight: 700;
+color: var(–gold);
+flex-shrink: 0;
+}
+
+.step-content { flex: 1; }
+
+.step-label {
+font-family: ‘Noto Kufi Arabic’, sans-serif;
+font-size: 13px;
+color: var(–text-dim);
+margin-bottom: 4px;
+}
+
+.step-value {
+font-family: ‘JetBrains Mono’, monospace;
+font-size: 16px;
+color: var(–cyan);
+word-break: break-all;
+}
+
+.step-explain {
+font-size: 13px;
+color: var(–text-dim);
+margin-top: 6px;
+line-height: 1.6;
+direction: rtl;
+font-family: ‘Noto Naskh Arabic’, serif;
+}
+
+.step-highlight { color: var(–gold); font-weight: 600; }
+.step-green { color: var(–green); }
+.step-red { color: var(–red); }
+.step-purple { color: var(–purple); }
+
+/* ── RESULT BOX ── */
+.result-box {
+background: linear-gradient(135deg, #0a1a0a, #0d2010);
+border: 1px solid #1a4a20;
+border-radius: 14px;
+padding: 20px 24px;
+text-align: center;
+margin-top: 20px;
+position: relative;
+overflow: hidden;
+}
+
+.result-box::before {
+content: ‘’;
+position: absolute;
+top: 0; left: 0; right: 0;
+height: 2px;
+background: linear-gradient(90deg, transparent, var(–green), transparent);
+}
+
+.result-box .result-label {
+font-family: ‘Noto Kufi Arabic’, sans-serif;
+font-size: 13px;
+color: var(–text-dim);
+margin-bottom: 8px;
+}
+
+.result-box .result-value {
+font-family: ‘JetBrains Mono’, monospace;
+font-size: 28px;
+font-weight: 700;
+color: var(–green);
+text-shadow: 0 0 20px rgba(0,255,136,0.4);
+word-break: break-all;
+letter-spacing: 3px;
+}
+
+/* ── BIT TABLE ── */
+.bit-table-wrap {
+overflow-x: auto;
+margin-top: 16px;
+}
+
+.bit-table {
+border-collapse: collapse;
+width: 100%;
+font-family: ‘JetBrains Mono’, monospace;
+font-size: 14px;
+direction: ltr;
+}
+
+.bit-table th {
+background: var(–bg-panel);
+color: var(–gold);
+padding: 10px 14px;
+border: 1px solid var(–border);
+font-weight: 700;
+font-family: ‘Noto Kufi Arabic’, sans-serif;
+font-size: 13px;
+white-space: nowrap;
+}
+
+.bit-table td {
+padding: 10px 14px;
+border: 1px solid var(–border);
+text-align: center;
+color: var(–text-main);
+background: var(–bg-card);
+transition: background 0.2s;
+}
+
+.bit-table tr:hover td { background: var(–bg-panel); }
+
+.bit-1 { color: var(–green) !important; font-weight: 700; }
+.bit-0 { color: var(–text-dim) !important; }
+
+/* ── TRUTH TABLE ── */
+.truth-table {
+border-collapse: collapse;
+width: 100%;
+font-family: ‘JetBrains Mono’, monospace;
+font-size: 14px;
+direction: ltr;
+}
+
+.truth-table th {
+background: var(–glow-gold);
+color: var(–gold-light);
+padding: 12px 16px;
+border: 1px solid var(–border-gold);
+font-weight: 700;
+text-align: center;
+}
+
+.truth-table td {
+padding: 10px 16px;
+border: 1px solid var(–border);
+text-align: center;
+background: var(–bg-card);
+color: var(–text-main);
+transition: background 0.15s;
+}
+
+.truth-table tr:hover td { background: var(–bg-panel); }
+.truth-table .row-highlight td { background: rgba(0,255,136,0.05); }
+
+/* ── INFO GRID ── */
+.info-grid {
+display: grid;
+grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+gap: 16px;
+margin-top: 16px;
+}
+
+.info-cell {
+background: var(–bg-panel);
+border: 1px solid var(–border);
+border-radius: 12px;
+padding: 18px;
+text-align: center;
+transition: border-color 0.2s;
+}
+
+.info-cell:hover { border-color: var(–gold-dim); }
+
+.info-cell .info-label {
+font-family: ‘Noto Kufi Arabic’, sans-serif;
+font-size: 12px;
+color: var(–text-dim);
+margin-bottom: 8px;
+}
+
+.info-cell .info-val {
+font-family: ‘JetBrains Mono’, monospace;
+font-size: 20px;
+font-weight: 700;
+color: var(–gold-light);
+word-break: break-all;
+letter-spacing: 2px;
+}
+
+/* ── ERROR ── */
+.error-box {
+background: rgba(255,71,87,0.08);
+border: 1px solid rgba(255,71,87,0.3);
+border-radius: 12px;
+padding: 16px 20px;
+color: var(–red);
+font-family: ‘Noto Kufi Arabic’, sans-serif;
+font-size: 14px;
+margin-top: 12px;
+display: none;
+}
+
+/* ── HISTORY ── */
+.history-list {
+display: flex;
+flex-direction: column;
+gap: 10px;
+margin-top: 12px;
+max-height: 220px;
+overflow-y: auto;
+}
+
+.history-item {
+display: flex;
+align-items: center;
+justify-content: space-between;
+background: var(–bg-panel);
+border: 1px solid var(–border);
+border-radius: 10px;
+padding: 10px 16px;
+font-family: ‘JetBrains Mono’, monospace;
+font-size: 13px;
+cursor: pointer;
+transition: border-color 0.2s;
+direction: ltr;
+}
+
+.history-item:hover { border-color: var(–gold-dim); }
+
+.history-item .h-op { color: var(–gold); font-size: 11px; margin-bottom: 2px; font-family: ‘Noto Kufi Arabic’, sans-serif; font-size: 12px; }
+.history-item .h-val { color: var(–cyan); }
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(–bg-deep); }
+::-webkit-scrollbar-thumb { background: var(–border-gold); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(–gold-dim); }
+
+/* ── FOOTER ── */
+footer {
+position: relative;
+z-index: 5;
+text-align: center;
+padding: 24px;
+border-top: 1px solid var(–border);
+color: var(–text-dim);
+font-size: 13px;
+font-family: ‘Noto Kufi Arabic’, sans-serif;
+}
+
+footer span { color: var(–gold-dim); }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 600px) {
+header { padding: 18px 16px 14px; }
+.logo-text h1 { font-size: 17px; }
+main { padding: 24px 12px 60px; }
+.card { padding: 20px 16px; }
+.input-row { flex-direction: column; }
+.btn { width: 100%; }
+.result-box .result-value { font-size: 22px; }
+.tab-btn { padding: 8px 14px; font-size: 13px; }
+.section-title h2 { font-size: 22px; }
+}
+</style>
+
+</head>
+<body>
+<div class="grid-overlay"></div>
+
+<!-- HEADER -->
+
+<header>
+  <div class="logo-wrap">
+    <div class="logo-icon">AMZ<br>01</div>
+    <div class="logo-text">
+      <h1>AMZ BINARY</h1>
+      <p>شیکاری باینەری — Logic Design · IT Department · LFU</p>
+    </div>
+  </div>
+  <div class="header-badge">
+    <div class="badge-dot"></div>
+    ئامادەی کارکردن
+  </div>
+</header>
+
+<main>
+  <div class="section-title">
+    <h2>🔢 ئامرازی شیکاری باینەری</h2>
+    <div class="divider"></div>
+    <p>گۆڕینی ژمارە، کارپێکردن لەسەر باینەری، وە تەوافوقی مەنتق — هەموو بە هەنگاو هەنگاو</p>
+  </div>
+
+  <!-- TABS -->
+
+  <div class="tab-nav">
+    <button class="tab-btn active" onclick="showTab('conv')">🔄 گۆڕینی ئەساس</button>
+    <button class="tab-btn" onclick="showTab('arith')">➕ كارپێکردنی باینەری</button>
+    <button class="tab-btn" onclick="showTab('complement')">🔃 چووەک و دووەک</button>
+    <button class="tab-btn" onclick="showTab('logic')">⚡ دەرگا و تەوافوق</button>
+    <button class="tab-btn" onclick="showTab('float')">🌊 باینەری وردەخاڵ</button>
+  </div>
+
+  <!-- ═══════════════════════════════ TAB 1: CONVERSION ═══════════════════════════════ -->
+
+  <div id="tab-conv" class="tab-panel active">
+
+```
+<!-- Decimal → Binary -->
+<div class="card">
+  <div class="card-title"><div class="icon">🔟</div>دەیی بۆ باینەری (Decimal → Binary)</div>
+  <div class="input-row">
+    <div class="input-group">
+      <label>ژمارەی دەیی داخڵ بکە</label>
+      <input type="number" id="d2b-in" placeholder="255" min="0" oninput="clearResult('d2b-result','d2b-steps','d2b-err')">
+    </div>
+    <div class="input-group" style="max-width:160px">
+      <label>پیتی جووتاو</label>
+      <select id="d2b-bits">
+        <option>8 بیت</option>
+        <option>16 بیت</option>
+        <option>32 بیت</option>
+        <option>خۆکارانە</option>
+      </select>
+    </div>
+    <button class="btn" onclick="dec2bin()">شیکار بکە →</button>
+  </div>
+  <div class="error-box" id="d2b-err"></div>
+  <div id="d2b-steps" class="steps-container"></div>
+  <div class="result-box" id="d2b-result" style="display:none">
+    <div class="result-label">ئەنجامی باینەری</div>
+    <div class="result-value" id="d2b-val"></div>
+    <div id="d2b-info" style="margin-top:12px;font-size:13px;color:var(--text-dim)"></div>
+  </div>
+</div>
+
+<!-- Binary → Decimal -->
+<div class="card">
+  <div class="card-title"><div class="icon">⬅️</div>باینەری بۆ دەیی (Binary → Decimal)</div>
+  <div class="input-row">
+    <div class="input-group">
+      <label>ژمارەی باینەری داخڵ بکە</label>
+      <input type="text" id="b2d-in" placeholder="11001010" oninput="sanitizeBin(this);clearResult('b2d-result','b2d-steps','b2d-err')">
+    </div>
+    <button class="btn" onclick="bin2dec()">شیکار بکە →</button>
+  </div>
+  <div class="error-box" id="b2d-err"></div>
+  <div id="b2d-steps" class="steps-container"></div>
+  <div class="result-box" id="b2d-result" style="display:none">
+    <div class="result-label">ئەنجامی دەیی</div>
+    <div class="result-value" id="b2d-val"></div>
+  </div>
+</div>
+
+<!-- Decimal → Hex / Octal -->
+<div class="card">
+  <div class="card-title"><div class="icon">🔢</div>دەیی بۆ هێکسا و ئۆکتاڵ</div>
+  <div class="input-row">
+    <div class="input-group">
+      <label>ژمارەی دەیی</label>
+      <input type="number" id="d2hx-in" placeholder="255" min="0" oninput="clearResult('d2hx-result','d2hx-steps','d2hx-err')">
+    </div>
+    <button class="btn" onclick="dec2hexoct()">شیکار بکە →</button>
+  </div>
+  <div class="error-box" id="d2hx-err"></div>
+  <div id="d2hx-steps" class="steps-container"></div>
+  <div class="info-grid" id="d2hx-result" style="display:none">
+    <div class="info-cell"><div class="info-label">باینەری (Base 2)</div><div class="info-val" id="d2hx-bin"></div></div>
+    <div class="info-cell"><div class="info-label">ئۆکتاڵ (Base 8)</div><div class="info-val" id="d2hx-oct"></div></div>
+    <div class="info-cell"><div class="info-label">هێکسا (Base 16)</div><div class="info-val" id="d2hx-hex"></div></div>
+    <div class="info-cell"><div class="info-label">دەیی (Base 10)</div><div class="info-val" id="d2hx-dec"></div></div>
+  </div>
+</div>
+
+<!-- Bit visualizer -->
+<div class="card">
+  <div class="card-title"><div class="icon">🧮</div>پیشاندەری بیتەکان (Bit Visualizer)</div>
+  <div class="input-row">
+    <div class="input-group">
+      <label>ژمارەی دەیی (0 - 255)</label>
+      <input type="number" id="bv-in" placeholder="170" min="0" max="255" oninput="bitVisual()">
+    </div>
+  </div>
+  <div class="bit-table-wrap">
+    <table class="bit-table" id="bv-table">
+      <thead><tr id="bv-head"></tr></thead>
+      <tbody><tr id="bv-body"></tr></tbody>
+    </table>
+  </div>
+</div>
+```
+
+  </div><!-- /tab-conv -->
+
+  <!-- ═══════════════════════════════ TAB 2: ARITHMETIC ═══════════════════════════════ -->
+
+  <div id="tab-arith" class="tab-panel">
+    <div class="card">
+      <div class="card-title"><div class="icon">➕</div>کارپێکردنی باینەری</div>
+      <div class="input-row">
+        <div class="input-group">
+          <label>ژمارەی یەکەم (باینەری)</label>
+          <input type="text" id="ar-a" placeholder="1011" oninput="sanitizeBin(this)">
+        </div>
+        <div class="input-group" style="max-width:130px">
+          <label>کارپێکردن</label>
+          <select id="ar-op">
+            <option value="add">+ کۆکردن</option>
+            <option value="sub">− کەمکردن</option>
+            <option value="mul">× لێکدان</option>
+            <option value="and">AND</option>
+            <option value="or">OR</option>
+            <option value="xor">XOR</option>
+          </select>
+        </div>
+        <div class="input-group">
+          <label>ژمارەی دووەم (باینەری)</label>
+          <input type="text" id="ar-b" placeholder="0110" oninput="sanitizeBin(this)">
+        </div>
+        <button class="btn" onclick="doArith()">شیکار بکە →</button>
+      </div>
+      <div class="error-box" id="ar-err"></div>
+      <div id="ar-steps" class="steps-container"></div>
+      <div class="result-box" id="ar-result" style="display:none">
+        <div class="result-label">ئەنجام</div>
+        <div class="result-value" id="ar-val"></div>
+        <div id="ar-dec" style="margin-top:8px;font-size:14px;color:var(--text-dim)"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════ TAB 3: COMPLEMENT ═══════════════════════════════ -->
+
+  <div id="tab-complement" class="tab-panel">
+    <div class="card">
+      <div class="card-title"><div class="icon">🔃</div>چووەکی یەکەم و دووەم (1's & 2's Complement)</div>
+      <div class="input-row">
+        <div class="input-group">
+          <label>ژمارەی باینەری داخڵ بکە</label>
+          <input type="text" id="comp-in" placeholder="10110100" oninput="sanitizeBin(this);clearResult('comp-result','comp-steps','comp-err')">
+        </div>
+        <button class="btn" onclick="doComplement()">شیکار بکە →</button>
+      </div>
+      <div class="error-box" id="comp-err"></div>
+      <div id="comp-steps" class="steps-container"></div>
+      <div id="comp-result" style="display:none">
+        <div class="info-grid">
+          <div class="info-cell"><div class="info-label">ژمارەی سەرەکی</div><div class="info-val" id="comp-orig"></div></div>
+          <div class="info-cell"><div class="info-label">چووەکی یەکەم (1's)</div><div class="info-val" id="comp-1s"></div></div>
+          <div class="info-cell"><div class="info-label">چووەکی دووەم (2's)</div><div class="info-val" id="comp-2s"></div></div>
+          <div class="info-cell"><div class="info-label">باینەری نێوانی (Unsigned)</div><div class="info-val" id="comp-uns"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════ TAB 4: LOGIC GATES ═══════════════════════════════ -->
+
+  <div id="tab-logic" class="tab-panel">
+    <div class="card">
+      <div class="card-title"><div class="icon">⚡</div>دەرگاکانی مەنتق و جەدوەلی راستی (Logic Gates & Truth Tables)</div>
+      <div class="input-row">
+        <div class="input-group" style="max-width:200px">
+          <label>جۆری دەرگا</label>
+          <select id="gate-type" onchange="buildTruthTable()">
+            <option value="AND">AND — هەردووان</option>
+            <option value="OR">OR — یەکێک</option>
+            <option value="NOT">NOT — پێچەوانە</option>
+            <option value="NAND">NAND — نەهەردووان</option>
+            <option value="NOR">NOR — نەیەکێک</option>
+            <option value="XOR">XOR — جیاوازی</option>
+            <option value="XNOR">XNOR — یەکسانی</option>
+          </select>
+        </div>
+        <div class="input-group" style="max-width:180px">
+          <label>ژمارەی دانەوارد</label>
+          <select id="gate-inputs" onchange="buildTruthTable()">
+            <option value="2">دانەوارد ٢</option>
+            <option value="3">دانەوارد ٣</option>
+            <option value="4">دانەوارد ٤</option>
+          </select>
+        </div>
+      </div>
+      <div id="gate-explain" class="step" style="animation:none;margin-bottom:16px;display:none">
+        <div class="step-num">?</div>
+        <div class="step-content">
+          <div class="step-label" id="gate-name"></div>
+          <div class="step-explain" id="gate-desc"></div>
+        </div>
+      </div>
+      <div class="bit-table-wrap">
+        <table class="truth-table" id="truth-table"></table>
+      </div>
+      <div style="margin-top:20px">
+        <div class="card-title" style="font-size:15px;margin-bottom:14px">🧪 تاقی کردنەوەی ئیچتیاری</div>
+        <div class="input-row" id="gate-test-inputs"></div>
+        <div class="result-box" id="gate-test-result" style="display:none">
+          <div class="result-label">دەرکەوتوو</div>
+          <div class="result-value" id="gate-test-val"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════ TAB 5: FLOAT ═══════════════════════════════ -->
+
+  <div id="tab-float" class="tab-panel">
+    <div class="card">
+      <div class="card-title"><div class="icon">🌊</div>باینەری ژمارەی وردەخاڵ — IEEE 754 (32-bit)</div>
+      <div class="input-row">
+        <div class="input-group">
+          <label>ژمارەی وردەخاڵ داخڵ بکە</label>
+          <input type="text" id="fp-in" placeholder="3.14" oninput="clearResult('fp-result','fp-steps','fp-err')">
+        </div>
+        <button class="btn" onclick="doFloat()">شیکار بکە →</button>
+      </div>
+      <div class="error-box" id="fp-err"></div>
+      <div id="fp-steps" class="steps-container"></div>
+      <div id="fp-result" style="display:none">
+        <div class="info-grid">
+          <div class="info-cell"><div class="info-label">نیشانەکە (Sign)</div><div class="info-val" id="fp-sign"></div></div>
+          <div class="info-cell"><div class="info-label">ئەزموون (Exponent 8-bit)</div><div class="info-val" id="fp-exp"></div></div>
+          <div class="info-cell"><div class="info-label">کورتاو (Mantissa 23-bit)</div><div class="info-val" id="fp-mant"></div></div>
+        </div>
+        <div class="result-box" style="margin-top:16px">
+          <div class="result-label">IEEE 754 تەواوی ٣٢ بیت</div>
+          <div class="result-value" id="fp-full" style="font-size:14px;letter-spacing:2px;word-break:break-all"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  <span>AMZ GROUP</span> · بەشی IT · زانکۆی فەرەنسی لەبنانی · کوردستان، عێراق
+</footer>
+
+<script>
+/* ═══════════════════════════ UTILITY ═══════════════════════════ */
+function $(id){ return document.getElementById(id); }
+
+function showTab(name){
+  var panels = document.querySelectorAll('.tab-panel');
+  var btns   = document.querySelectorAll('.tab-btn');
+  for(var i=0;i<panels.length;i++) panels[i].classList.remove('active');
+  for(var i=0;i<btns.length;i++)   btns[i].classList.remove('active');
+  $('tab-'+name).classList.add('active');
+  var allBtns = document.querySelectorAll('.tab-btn');
+  var map = {conv:0,arith:1,complement:2,logic:3,float:4};
+  allBtns[map[name]].classList.add('active');
+  if(name==='logic') buildTruthTable();
+  if(name==='conv'){ var d=$('bv-in'); if(!d.value)d.value=170; bitVisual(); }
+}
+
+function sanitizeBin(el){
+  el.value = el.value.replace(/[^01]/g,'');
+}
+
+function showErr(id, msg){
+  var el = $(id);
+  el.textContent = '⚠ ' + msg;
+  el.style.display = 'block';
+}
+
+function clearResult(resId, stepsId, errId){
+  if(resId)  { var r=$(resId); r.style.display='none'; }
+  if(stepsId){ $( stepsId).innerHTML=''; }
+  if(errId)  { var e=$(errId); e.style.display='none'; }
+}
+
+function padLeft(str, len, ch){ ch=ch||'0'; while(str.length<len) str=ch+str; return str; }
+
+function makeStep(num, label, value, explain, colorClass){
+  var div=document.createElement('div');
+  div.className='step';
+  div.style.animationDelay=(num*0.07)+'s';
+  colorClass = colorClass || 'step-value';
+  div.innerHTML =
+    '<div class="step-num">'+num+'</div>'+
+    '<div class="step-content">'+
+      '<div class="step-label">'+label+'</div>'+
+      '<div class="'+colorClass+'">'+value+'</div>'+
+      (explain ? '<div class="step-explain">'+explain+'</div>' : '')+
+    '</div>';
+  return div;
+}
+
+/* ═══════════════════════════ DEC → BIN ═══════════════════════════ */
+function dec2bin(){
+  clearResult('d2b-result','d2b-steps','d2b-err');
+  var raw = $('d2b-in').value.trim();
+  if(raw===''){showErr('d2b-err','تکایە ژمارەیەک داخڵ بکە');return;}
+  var n = parseInt(raw,10);
+  if(isNaN(n)||n<0){showErr('d2b-err','تەنها ژمارەی تەواو و ئەرێنی (0 تا...) ڕێگە پێدراوە');return;}
+
+  var cont = $('d2b-steps');
+  var stepN = 1;
+
+  // Step 1 - explain
+  cont.appendChild(makeStep(stepN++,'دەیی دراوە:',n,'ئێمە پێویستمانە ئەمە بگۆڕین بۆ باینەری بە دابەشکردن لەسەر ٢ وە هەڵگرتنی ماوەکان.','step-highlight'));
+
+  // Division steps
+  var temp = n;
+  var remainders = [];
+  var maxSteps = 40;
+  var cnt = 0;
+  while(temp > 0 && cnt < maxSteps){
+    var q = Math.floor(temp/2);
+    var r = temp % 2;
+    remainders.push(r);
+    var explain = '<span class="step-highlight">'+temp+'</span> ÷ 2 = <span class="step-green">'+q+'</span> بەماوە <span class="step-purple">'+r+'</span>';
+    cont.appendChild(makeStep(stepN++,
+      'هەنگاوی دابەشکردن',
+      temp+' ÷ 2 = '+q+' ... ماوە: '+r,
+      explain,'step-value'));
+    temp = q;
+    cnt++;
+  }
+  if(n===0) remainders = [0];
+
+  // Step - collect remainders reversed
+  var binStr = remainders.slice().reverse().join('');
+  cont.appendChild(makeStep(stepN++,'ماوەکان پێچەوانە ئەخوێنرێتەوە:',binStr,
+    'ماوەکانی ئەمانەی خوارەوە وردبکەوە بۆ سەرەوە — ئەوەیە ژمارەی باینەری.',
+    'step-green'));
+
+  // Padding
+  var bitsOpt = $('d2b-bits').value;
+  var bitsN = 0;
+  if(bitsOpt==='8 بیت') bitsN=8;
+  else if(bitsOpt==='16 بیت') bitsN=16;
+  else if(bitsOpt==='32 بیت') bitsN=32;
+  var padded = binStr;
+  if(bitsN > 0 && binStr.length <= bitsN){
+    padded = padLeft(binStr, bitsN);
+    cont.appendChild(makeStep(stepN++,'تەواوکردن (Padding) بۆ '+bitsN+' بیت:',padded,
+      'سفرەکان لەلای چەپ زیاد دەکرێن تا ژمارەی بیتەکان تێبگات.',
+      'step-value'));
+  }
+
+  // Result
+  var resBox = $('d2b-result');
+  resBox.style.display='block';
+  $('d2b-val').textContent = padded;
+  $('d2b-info').innerHTML = 'دەیی: '+n+' &nbsp;|&nbsp; ئۆکتاڵ: '+n.toString(8).toUpperCase()+' &nbsp;|&nbsp; هێکسا: 0x'+n.toString(16).toUpperCase();
+}
+
+/* ═══════════════════════════ BIN → DEC ═══════════════════════════ */
+function bin2dec(){
+  clearResult('b2d-result','b2d-steps','b2d-err');
+  var raw = $('b2d-in').value.trim();
+  if(!raw){showErr('b2d-err','تکایە ژمارەی باینەری داخڵ بکە');return;}
+  if(!/^[01]+$/.test(raw)){showErr('b2d-err','تەنها ژمارەی ١ و ٠ ڕێگە پێدراوە');return;}
+
+  var cont = $('b2d-steps');
+  var stepN = 1;
+
+  cont.appendChild(makeStep(stepN++,'باینەری دراوە:',raw,
+    'هەر بیتێک هێزی دووەمی ئەندازەی خۆیەتی — لەلای ڕاستەوە دەست پێدەکەین (2⁰).',
+    'step-highlight'));
+
+  var total = 0;
+  var len = raw.length;
+  var expr = '';
+
+  for(var i=0;i<len;i++){
+    var bit = parseInt(raw[i]);
+    var power = len-1-i;
+    var val = bit * Math.pow(2,power);
+    total += val;
+    var ex = '<span class="step-highlight">'+bit+'</span> × 2<sup>'+power+'</sup> = <span class="step-'+(bit?'green':'0')+'">'+val+'</span>';
+    cont.appendChild(makeStep(stepN++,
+      'بیتی شوێنی '+(i+1)+' (هێزی 2^'+power+')',
+      bit+' × 2^'+power+' = '+val,
+      ex,'step-value'));
+    if(i>0) expr += ' + ';
+    expr += val;
+  }
+
+  cont.appendChild(makeStep(stepN++,'کۆکردنی هەموو ئەنجامەکان:',expr+' = '+total,
+    'کۆی ئەنجامەکانی سەرەوە دابنێ بۆ دەستکەوتنی ژمارەی دەیی.',
+    'step-green'));
+
+  $('b2d-result').style.display='block';
+  $('b2d-val').textContent = total;
+}
+
+/* ═══════════════════════════ DEC → HEX/OCT ═══════════════════════════ */
+function dec2hexoct(){
+  clearResult('d2hx-result','d2hx-steps','d2hx-err');
+  var raw=$('d2hx-in').value.trim();
+  if(!raw){showErr('d2hx-err','تکایە ژمارەی دەیی داخڵ بکە');return;}
+  var n=parseInt(raw,10);
+  if(isNaN(n)||n<0){showErr('d2hx-err','ژمارەی تەواو و ئەرێنی پێویستە');return;}
+
+  var cont=$('d2hx-steps');
+  var stepN=1;
+
+  // Binary path
+  cont.appendChild(makeStep(stepN++,'گام ١ — دەیی بۆ باینەری:',n.toString(2),
+    'پێشتر دەیی بگۆڕینە باینەری بە دابەشکردن لەسەر ٢.','step-value'));
+
+  // Octal
+  var octSteps=[];
+  var tmp=n;
+  while(tmp>0){ octSteps.push(tmp%8); tmp=Math.floor(tmp/8); }
+  if(n===0) octSteps=[0];
+  var octStr=octSteps.slice().reverse().join('');
+  cont.appendChild(makeStep(stepN++,'گام ٢ — دەیی بۆ ئۆکتاڵ (دابەشکردن لەسەر ٨):',octStr,
+    'هەمان ئامرازی دابەشکردن بەڵام ئەیانکردن ٨ بەکاردەهێنین.','step-purple'));
+
+  // Hex
+  var hexChars='0123456789ABCDEF';
+  var hexSteps=[];
+  tmp=n;
+  while(tmp>0){ hexSteps.push(hexChars[tmp%16]); tmp=Math.floor(tmp/16); }
+  if(n===0) hexSteps=['0'];
+  var hexStr=hexSteps.slice().reverse().join('');
+  cont.appendChild(makeStep(stepN++,'گام ٣ — دەیی بۆ هێکسادەسیماڵ (دابەشکردن لەسەر ١٦):','0x'+hexStr,
+    'ژمارەکان لەگەڵ پیتەکانی A-F (10-15) بەکاردەهێنرێن.','step-red'));
+
+  $('d2hx-result').style.display='grid';
+  $('d2hx-bin').textContent=n.toString(2);
+  $('d2hx-oct').textContent=octStr;
+  $('d2hx-hex').textContent='0x'+hexStr;
+  $('d2hx-dec').textContent=n;
+}
+
+/* ═══════════════════════════ BIT VISUALIZER ═══════════════════════════ */
+function bitVisual(){
+  var raw=$('bv-in').value.trim();
+  var n=parseInt(raw,10);
+  if(isNaN(n)||n<0||n>255){
+    $('bv-head').innerHTML='';
+    $('bv-body').innerHTML='';
+    return;
+  }
+  var bin=padLeft(n.toString(2),8);
+  var head=$('bv-head');
+  var body=$('bv-body');
+  head.innerHTML='';
+  body.innerHTML='';
+  for(var i=7;i>=0;i--){
+    var th=document.createElement('th');
+    th.textContent='2^'+i+' ('+Math.pow(2,i)+')';
+    head.appendChild(th);
+  }
+  for(var i=0;i<8;i++){
+    var td=document.createElement('td');
+    var b=bin[i];
+    td.textContent=b;
+    td.className=b==='1'?'bit-1':'bit-0';
+    body.appendChild(td);
+  }
+}
+
+/* ═══════════════════════════ ARITHMETIC ═══════════════════════════ */
+function doArith(){
+  clearResult('ar-result','ar-steps','ar-err');
+  var a=$('ar-a').value.trim();
+  var b=$('ar-b').value.trim();
+  var op=$('ar-op').value;
+
+  if(!a||!b){showErr('ar-err','ژمارەی باینەری هەردووکیان داخڵ بکە');return;}
+  if(!/^[01]+$/.test(a)||!/^[01]+$/.test(b)){showErr('ar-err','تەنها ١ و ٠ پێویستە');return;}
+
+  var aInt=parseInt(a,2);
+  var bInt=parseInt(b,2);
+  var cont=$('ar-steps');
+  var stepN=1;
+
+  var opNames={add:'کۆکردن (+)',sub:'کەمکردن (−)',mul:'لێکدان (×)',and:'AND',or:'OR',xor:'XOR'};
+  cont.appendChild(makeStep(stepN++,'دانەواردەکان:',
+    'A = '+a+' (دەیی: '+aInt+')  |  B = '+b+' (دەیی: '+bInt+')',
+    'کارپێکردن: <span class="step-gold">'+opNames[op]+'</span>','step-highlight'));
+
+  var result=0;
+  var explain='';
+
+  if(op==='add'){
+    result=aInt+bInt;
+    // Step-by-step binary addition
+    var maxLen=Math.max(a.length,b.length)+1;
+    var pa=padLeft(a,maxLen);
+    var pb=padLeft(b,maxLen);
+    cont.appendChild(makeStep(stepN++,'تەواوکردن بۆ ئەندازەی یەکسان:',
+      pa+'\n+ '+pb,'هەردووکیان بە هەمان ژمارەی بیت تەواو دەکرێن.','step-value'));
+
+    // Column addition
+    var carry=0;
+    var sumBits='';
+    var carries='';
+    for(var i=maxLen-1;i>=0;i--){
+      var ba=parseInt(pa[i]||'0');
+      var bb=parseInt(pb[i]||'0');
+      var s=ba+bb+carry;
+      sumBits=(s%2)+sumBits;
+      var newCarry=Math.floor(s/2);
+      carries=(carry?carry:'·')+carries;
+      carry=newCarry;
+    }
+    cont.appendChild(makeStep(stepN++,'ئەنجامی کۆکردن (بیت بە بیت):',sumBits,
+      'گەر کۆ ٢ بات، هەڵگرتن (carry) بۆ ئەوبەری بیتی دواتر دەچێت.','step-green'));
+
+  } else if(op==='sub'){
+    result=aInt-bInt;
+    var twosB=bInt===0?'0':padLeft((~bInt>>>0).toString(2).slice(-Math.max(a.length,b.length,8)),Math.max(a.length,b.length,8));
+    cont.appendChild(makeStep(stepN++,'کەمکردن = کۆکردنی چووەکی دووەم:',
+      'B = '+b+' → 2\'s complement بۆ '+result.toString(2),
+      'کەمکردن لە باینەری دا بە زیادکردنی چووەکی دووەمی B ئەنجام دەدرێت.','step-purple'));
+
+  } else if(op==='mul'){
+    result=aInt*bInt;
+    cont.appendChild(makeStep(stepN++,'لێکدانی باینەری:',
+      a+' × '+b+' = '+result.toString(2),
+      'هەر بیتێک لە B ئەگەر ١ بوو، A دابەشی دوگمەیی لێکدرێتەوە، دواتر کۆدەکرێتەوە.','step-value'));
+
+  } else if(op==='and'){
+    result=aInt&bInt;
+    var maxL=Math.max(a.length,b.length);
+    var pa2=padLeft(a,maxL);
+    var pb2=padLeft(b,maxL);
+    var andStr='';
+    var andEx='AND: بیت هەردووکیان ١ بن ئەوا ئەنجام ١ — وگەر نا ٠';
+    for(var i=0;i<maxL;i++) andStr+=((parseInt(pa2[i])&parseInt(pb2[i]))?'1':'0');
+    cont.appendChild(makeStep(stepN++,'AND بیت بە بیت:',
+      pa2+'\nAND '+pb2+'\n= '+andStr,andEx,'step-cyan'));
+
+  } else if(op==='or'){
+    result=aInt|bInt;
+    var maxL=Math.max(a.length,b.length);
+    var pa2=padLeft(a,maxL);
+    var pb2=padLeft(b,maxL);
+    var orStr='';
+    for(var i=0;i<maxL;i++) orStr+=((parseInt(pa2[i])|parseInt(pb2[i]))?'1':'0');
+    cont.appendChild(makeStep(stepN++,'OR بیت بە بیت:',
+      pa2+'\nOR  '+pb2+'\n= '+orStr,
+      'OR: یەکێکیان ١ بوو ئەوا ئەنجام ١','step-cyan'));
+
+  } else if(op==='xor'){
+    result=aInt^bInt;
+    var maxL=Math.max(a.length,b.length);
+    var pa2=padLeft(a,maxL);
+    var pb2=padLeft(b,maxL);
+    var xorStr='';
+    for(var i=0;i<maxL;i++) xorStr+=((parseInt(pa2[i])^parseInt(pb2[i]))?'1':'0');
+    cont.appendChild(makeStep(stepN++,'XOR بیت بە بیت:',
+      pa2+'\nXOR '+pb2+'\n= '+xorStr,
+      'XOR: جیاوازن ئەوا ١، یەکسانن ئەوا ٠','step-cyan'));
+  }
+
+  cont.appendChild(makeStep(stepN,'ئەنجامی کۆتایی:',result.toString(2),
+    'بە دەیی: '+result,'step-green'));
+
+  $('ar-result').style.display='block';
+  $('ar-val').textContent=result.toString(2);
+  $('ar-dec').textContent='بە دەیی: '+result+'  |  بە هێکسا: 0x'+result.toString(16).toUpperCase();
+}
+
+/* ═══════════════════════════ COMPLEMENT ═══════════════════════════ */
+function doComplement(){
+  clearResult('comp-result','comp-steps','comp-err');
+  var raw=$('comp-in').value.trim();
+  if(!raw){showErr('comp-err','ژمارەی باینەری داخڵ بکە');return;}
+  if(!/^[01]+$/.test(raw)){showErr('comp-err','تەنها ١ و ٠ ڕێگە پێدراوە');return;}
+
+  var cont=$('comp-steps');
+  var stepN=1;
+  var len=raw.length;
+
+  cont.appendChild(makeStep(stepN++,'ژمارەی سەرەکی:',raw,
+    'ئێمە پێویستمانە چووەکی یەکەم و دووەمی ئەمەی بدۆزینەوە.','step-highlight'));
+
+  // 1's complement — flip all bits
+  var ones='';
+  for(var i=0;i<len;i++) ones+=(raw[i]==='1'?'0':'1');
+  cont.appendChild(makeStep(stepN++,'چووەکی یەکەم (1\'s Complement) — گۆڕینی هەموو بیتەکان:',ones,
+    'هەر ١ بگۆڕ بۆ ٠، هەر ٠ بگۆڕ بۆ ١ — ئەوەیە چووەکی یەکەم.','step-purple'));
+
+  // 2's complement — add 1 to 1's
+  var carry=1;
+  var twos=ones.split('');
+  for(var i=twos.length-1;i>=0&&carry;i--){
+    var s=parseInt(twos[i])+carry;
+    twos[i]=(s%2).toString();
+    carry=Math.floor(s/2);
+  }
+  var twosStr=twos.join('');
+  cont.appendChild(makeStep(stepN++,'چووەکی دووەم (2\'s Complement) — زیادکردنی ١:',twosStr,
+    'چووەکی یەکەم + ١ = چووەکی دووەم. ئەمە بۆ نیشاندانی ژمارەی نێگەتیف بەکاردەهێنرێت.','step-green'));
+
+  var unsignedVal=parseInt(raw,2);
+  $('comp-result').style.display='block';
+  $('comp-orig').textContent=raw;
+  $('comp-1s').textContent=ones;
+  $('comp-2s').textContent=twosStr;
+  $('comp-uns').textContent=unsignedVal;
+}
+
+/* ═══════════════════════════ LOGIC GATES ═══════════════════════════ */
+var gateDescs={
+  AND:  'AND: دەرکەوتوو ١ دەبێت تەنها کاتێک هەموو دانەواردەکان ١ بن. بڕوانە: بیستی A و B هەردووکیان دەبێت.',
+  OR:   'OR: دەرکەوتوو ١ دەبێت کاتێک لانیکەم یەکێک لە دانەواردەکان ١ بێت.',
+  NOT:  'NOT: پێچەوانەی دانەوارد. ١ دەبێتە ٠، ٠ دەبێتە ١.',
+  NAND: 'NAND: پێچەوانەی AND. دەرکەوتوو ٠ دەبێت تەنها کاتێک هەموو دانەواردەکان ١ بن.',
+  NOR:  'NOR: پێچەوانەی OR. دەرکەوتوو ١ تەنها کاتێک هەموو دانەواردەکان ٠ بن.',
+  XOR:  'XOR (جیاوازی): دەرکەوتوو ١ دەبێت کاتێک ژمارەیەکی تاک لە دانەواردەکان ١ بن.',
+  XNOR: 'XNOR (یەکسانی): پێچەوانەی XOR. دەرکەوتوو ١ دەبێت کاتێک هەموو یەکسان بن.'
+};
+
+function gateCalc(gate, bits){
+  var n=bits.length;
+  if(gate==='NOT') return bits[0]?0:1;
+  var a=bits[0];
+  for(var i=1;i<n;i++){
+    if(gate==='AND')  a=a&bits[i];
+    else if(gate==='OR')   a=a|bits[i];
+    else if(gate==='NAND') a=a&bits[i];
+    else if(gate==='NOR')  a=a|bits[i];
+    else if(gate==='XOR')  a=a^bits[i];
+    else if(gate==='XNOR') a=!(a^bits[i])?1:0;
+  }
+  if(gate==='NAND') a=a?0:1;
+  if(gate==='NOR')  a=a?0:1;
+  return a;
+}
+
+function buildTruthTable(){
+  var gate=$('gate-type').value;
+  var nInputs=(gate==='NOT')?1:parseInt($('gate-inputs').value);
+
+  // explain
+  var ex=$('gate-explain');
+  ex.style.display='flex';
+  $('gate-name').textContent=gate+' دەرگا';
+  $('gate-desc').textContent=gateDescs[gate];
+
+  var rows=Math.pow(2,nInputs);
+  var table=$('truth-table');
+  var html='<thead><tr>';
+  for(var i=0;i<nInputs;i++) html+='<th>'+String.fromCharCode(65+i)+'</th>';
+  html+='<th>دەرکەوتوو</th></tr></thead><tbody>';
+
+  for(var r=0;r<rows;r++){
+    var bits=[];
+    for(var i=nInputs-1;i>=0;i--) bits.unshift((r>>i)&1);
+    var out=gateCalc(gate,bits);
+    var rowClass=out?'row-highlight':'';
+    html+='<tr class="'+rowClass+'">';
+    for(var i=0;i<nInputs;i++) html+='<td class="'+(bits[i]?'bit-1':'bit-0')+'">'+bits[i]+'</td>';
+    html+='<td class="'+(out?'bit-1':'bit-0')+'" style="font-size:18px;font-weight:700;">'+out+'</td></tr>';
+  }
+  html+='</tbody>';
+  table.innerHTML=html;
+
+  // test inputs
+  var testRow=$('gate-test-inputs');
+  testRow.innerHTML='';
+  for(var i=0;i<nInputs;i++){
+    var grp=document.createElement('div');
+    grp.className='input-group';
+    grp.style.maxWidth='100px';
+    grp.innerHTML='<label>'+String.fromCharCode(65+i)+'</label><select id="gt-'+i+'"><option value="0">0</option><option value="1">1</option></select>';
+    testRow.appendChild(grp);
+  }
+  var btn=document.createElement('button');
+  btn.className='btn';
+  btn.textContent='تاقی بکەوە →';
+  btn.onclick=testGate;
+  testRow.appendChild(btn);
+  $('gate-test-result').style.display='none';
+}
+
+function testGate(){
+  var gate=$('gate-type').value;
+  var nInputs=(gate==='NOT')?1:parseInt($('gate-inputs').value);
+  var bits=[];
+  for(var i=0;i<nInputs;i++){
+    var el=$('gt-'+i);
+    if(!el)return;
+    bits.push(parseInt(el.value));
+  }
+  var out=gateCalc(gate,bits);
+  $('gate-test-result').style.display='block';
+  $('gate-test-val').textContent=out;
+  $('gate-test-val').style.color=out?'var(--green)':'var(--red)';
+}
+
+/* ═══════════════════════════ IEEE 754 FLOAT ═══════════════════════════ */
+function doFloat(){
+  clearResult('fp-result','fp-steps','fp-err');
+  var raw=$('fp-in').value.trim();
+  var n=parseFloat(raw);
+  if(isNaN(n)){showErr('fp-err','ژمارەی وردەخاڵی دروست داخڵ بکە (نموونە: 3.14)');return;}
+
+  var cont=$('fp-steps');
+  var stepN=1;
+
+  cont.appendChild(makeStep(stepN++,'ژمارەی دراوە:',n,
+    'ئێمە پێویستمانە ئەمە بگۆڕینە فۆرماتی IEEE 754 (32-bit single precision).','step-highlight'));
+
+  // Sign
+  var sign=n<0?1:0;
+  cont.appendChild(makeStep(stepN++,'نیشانەی نەگەتیف/ئەرێنی (Sign Bit):',sign,
+    'ئەگەر ژمارە نێگەتیف بوو: ١ | ئەگەر ئەرێنی بوو: ٠','step-purple'));
+
+  // Abs
+  var abs=Math.abs(n);
+
+  // Integer part → binary
+  var intPart=Math.floor(abs);
+  var fracPart=abs-intPart;
+  var intBin=intPart.toString(2);
+  cont.appendChild(makeStep(stepN++,'پارچەی تەواو بۆ باینەری:',intBin,
+    'پارچەی تەواوی ژمارە دەگۆڕینە باینەری بە دابەشکردن لەسەر ٢.','step-value'));
+
+  // Fraction → binary (up to 23 bits)
+  var fracBin='';
+  var tmp=fracPart;
+  for(var i=0;i<23&&tmp>0;i++){
+    tmp*=2;
+    fracBin+=Math.floor(tmp);
+    tmp-=Math.floor(tmp);
+  }
+  cont.appendChild(makeStep(stepN++,'پارچەی وردەخاڵ بۆ باینەری:','0.'+fracBin,
+    'پارچەی وردەخاڵ دووبارە دووبارە لەگەڵ ٢ دەلێکدرێت، پارچەی تەواو هەر جار تۆمار دەکرێت.','step-value'));
+
+  // Normalized form
+  var full=(intBin+fracBin).replace(/^0+/,'') || '0';
+  var normPos=intBin.replace(/^0+/,'').length-1;
+  if(normPos<0){
+    var firstOne=('0.'+fracBin).indexOf('1')-2;
+    normPos=-(firstOne+1);
+  }
+  cont.appendChild(makeStep(stepN++,'فۆرمی نۆرمال (1.xxxxx × 2^e):',
+    '1.'+full.slice(1).slice(0,22)+' × 2^'+normPos,
+    'ژمارە لە فۆرمی 1.xxxx × 2^e دادەنرێت — ئەوەیە normalisation.','step-green'));
+
+  // Exponent
+  var expVal=normPos+127;
+  var expBin=padLeft(expVal.toString(2),8);
+  cont.appendChild(makeStep(stepN++,'ئەزموون (Exponent = نۆرماڵ + ١٢٧):',
+    normPos+' + 127 = '+expVal+' → '+expBin,
+    'Bias 127 زیاددەکرێت بۆ هەردووکی نێگەتیف و ئەرێنی.','step-red'));
+
+  // Mantissa
+  var mantissa=padLeft(full.slice(1),23,'0').slice(0,23);
+  cont.appendChild(makeStep(stepN++,'کورتاو — Mantissa (٢٣ بیت):',mantissa,
+    'ژمارەکان دوای خاڵی ١. ئەخرێن بۆ ٢٣ بیت.','step-value'));
+
+  // Full 32-bit
+  var full32=sign+expBin+mantissa;
+  cont.appendChild(makeStep(stepN,'تەواوی ٣٢ بیت (Sign+Exponent+Mantissa):',full32,
+    'Sign(1) + Exponent(8) + Mantissa(23) = 32 بیت','step-green'));
+
+  $('fp-result').style.display='block';
+  $('fp-sign').textContent=sign;
+  $('fp-exp').textContent=expBin;
+  $('fp-mant').textContent=mantissa;
+  $('fp-full').textContent=full32;
+}
+
+/* ═══════════════════════════ INIT ═══════════════════════════ */
+window.onload = function(){
+  $('bv-in').value = 170;
+  bitVisual();
+  buildTruthTable();
+};
+</script>
+
+</body>
+</html>
